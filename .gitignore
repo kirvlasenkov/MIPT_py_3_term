@@ -1,0 +1,12 @@
+### Python template
+
+.DS_store
+
+venv
+venv/
+
+# Idea files
+.idea
+
+# Jupyter Notebook
+.ipynb_checkpoints
