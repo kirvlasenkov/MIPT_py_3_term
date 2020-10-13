@@ -17,30 +17,36 @@ class Shape:
         :param width:
         :param length:
         """
-        self._width = width
-        self._length = length
+        self._width = width if width >= 0 else -1
+        self._length = length if length >= 0 else -1
 
     @property
     def width(self) -> Union[int, float]:
-        return self._width
+        if self._width == -1:
+            raise ValueError("wrong data")
+        else:
+            return self._width
 
     @width.setter
     def width(self, new_width) -> None:
-        if (isinstance(new_width, int) or isinstance(new_width, float)):
+        if (isinstance(new_width, int) or isinstance(new_width, float)) and new_width >= 0:
             self._width = new_width
         else:
-            raise ValueError("wrong data type")
+            raise ValueError("wrong data!!!")
 
     @property
     def length(self) -> Union[int, float]:
-        return self._length
+        if self._length == -1:
+            raise ValueError("wrong data")
+        else:
+            return self._length
 
     @length.setter
     def length(self, new_length) -> None:
-        if (isinstance(new_length, int) or isinstance(new_length, float)):
+        if (isinstance(new_length, int) or isinstance(new_length, float)) and new_length >= 0:
             self._width = new_length
         else:
-            raise ValueError("wrong data type")
+            raise ValueError("wrong data!!!")
 
     @property
     def area(self) -> Exception:
@@ -66,9 +72,9 @@ class Triangle(Shape):
         :param side_2: length of the second triangle side
         :param side_3: length of the third triangle side
         """
-        self._side_1 = side_1
-        self._side_2 = side_2
-        self._side_3 = side_3
+        self._side_1 = side_1 if side_1 >= 0 else -1
+        self._side_2 = side_2 if side_2 >= 0 else -1
+        self._side_3 = side_3 if side_3 >= 0 else -1
 
     @property
     def area(self) -> Union[int, float]:
@@ -101,12 +107,11 @@ class Rectangle(Shape):
 
 
 if __name__ == "__main__":
-
-    rectangle = Rectangle(10, 10)
-    rectangle.length = 20
+    rectangle = Rectangle(-10, 10)
+    rectangle.length = -20
     rectangle.width = 15
     print("for rectangle",
-        "area: ", rectangle.area,
+          "area: ", rectangle.area,
           "width: ", rectangle.width,
           "length: ", rectangle.length,
           sep='\n')
