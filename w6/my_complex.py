@@ -18,11 +18,10 @@ class ComplexDescriptor:
 
         return instance.__dict__[self.__name]
 
+    def __set__(self, instance, value) -> None:
+        assert (isinstance(value, int) or isinstance(value, float))
 
-def __set__(self, instance, value) -> None:
-    assert (isinstance(value, int) or isinstance(value, float))
-
-    instance.__dict__[self.__name] = value
+        instance.__dict__[self.__name] = value
 
 
 class MyComplex:
