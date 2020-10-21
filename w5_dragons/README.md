@@ -1,5 +1,5 @@
 # arithmetic_dragons
-Just a repository for the little OOP homework project on Python (So far without a graphical shell).
+Just a folder for the little OOP homework project on Python (So far without a graphical shell).
 
 ## How to start playing
 You just only need to download this project on your local machine, make a virtual environment with obligatory modules (located in `requirements.txt`) and only then run main.py. 
