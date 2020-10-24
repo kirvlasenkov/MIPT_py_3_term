@@ -20,31 +20,23 @@ class MyVector:
                                        " space".format(dimension)
 
         if dimension == 0:
-            if list(args) == [0 for i in range(dimension)]:
-                self.__args: np.array[Union[int, float]] = np.array(args)
+            if list(args) == [0 for _ in range(dimension)]:
+                self.__args = np.array(args)
             else:
                 raise ValueError("vector from 0-dimensional space must be zero-vector")
         self.__dimension: int = dimension
         self.__args: np.array[Union[int, float]] = np.array(args)
 
     def __str__(self) -> str:
-        string = '('
-        for i in range(len(self.__args) - 1):
-            string += str(self.__args[i]) + ', '
-        string += str(self.__args[-1]) + ")"
-
+        string = '(' + ", ".join(map(str, self.__args)) + ')'
         return string
 
     def __repr__(self) -> str:
-        string = 'MyVector('
-        for i in range(len(self.__args) - 1):
-            string += str(self.__args[i]) + ', '
-        string += str(self.__args[-1]) + ")"
-
+        string = 'MyVector(' + ', '.join(map(str, self.__args)) + ')'
         return string
 
-    def __and__(self, other) -> 'MyVector':
-        return np.dot(self.__args, other.__args)
+    def __mul__(self, other) -> float:
+        return float(np.dot(self.__args, other.__args))
 
     def vector_norm(self) -> Union[int, float]:
         return np.linalg.norm(self.__args)
@@ -64,7 +56,7 @@ class MyVector:
         return self.__dimension
 
     def __iadd__(self, other):
-        self.__args +=  other.__args
+        self.__args += other.__args
         return self
 
     def __add__(self, other):
@@ -76,7 +68,7 @@ class MyVector:
         return MyVector(self.dimension, *sum_coords)
 
     def __isub__(self, other):
-        self.__args -=  other.__args
+        self.__args -= other.__args
         return self
 
     def __eq__(self, other):
@@ -113,17 +105,18 @@ if __name__ == '__main__':
             max_distance = vector.vector_norm()
             max_vector = vector
 
-    print(max_vector)
+    print("maximum, when compared norm value: ", repr(max_vector))
 
     # manipulation with index
-    vector =  MyVector(5, 1, 2, 3, 4, 4)
+    print("running through the vector by iterations")
+    vector = MyVector(5, 1, 2, 3, 4, 4)
     for i in range(len(vector)):
         print(vector[i])
 
     # dot product example
     vector_1 = MyVector(3, 1, 100, 1)
     vector_2 = MyVector(3, 0, 1, 0)
-    print(vector_1 & vector_2)
+    print("result of a dot product", vector_1 * vector_2)
 
-    # print(MyVector(2, 1, 1) + MyVector(2, 4, 5))
-    # print(abs(MyVector(4, 1, 2, 3, 4)))
+    print("sum of the vectors: ", MyVector(2, 1, 1) + MyVector(2, 4, 5))
+    print("Euclidean norm: ", (MyVector(4, 1, 2, 3, 4).vector_norm()))

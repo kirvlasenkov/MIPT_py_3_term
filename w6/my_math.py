@@ -46,27 +46,52 @@ class MyComplexMath(MyMath):  # Наследование
     '''
     __complex: bool = True  # Наследование и инкапсуляция
 
+    @staticmethod
+    def sin(x: complex) -> complex:
+        return cmath.sin(x)
+
 
 if __name__ == "__main__":
     real_number = MyMath()
     complex_number = MyComplexMath()
 
     # Simple test for sinus
-    print("sinus work:\n for complex: {}\n for real: {}\n".
+    print("sine work:\n for complex: {}\n for real: {}\n".
           format(complex_number.sin(2 * MyMath.pi),
                  real_number.sin(MyMath.pi / 2)))
 
-    # Simple test for sqrt
+    # Simple test for sqrt on positive value
     try:
-        neg_comp_sqrt = MyComplexMath.sqrt(-10)
         pos_comp_sqrt = MyComplexMath.sqrt(10)
         pos_real_sqrt = MyMath.sqrt(10)
-        neg_real_sqrt = MyMath.sqrt(-10)
-        print(neg_real_sqrt)
+        print("positive real sqrt: ", pos_real_sqrt)
+        print("positive complex sqrt: ", pos_comp_sqrt)
     except Exception:
-        print("ohh, smth gone wrong:(")
+        print("ohh, smth gone wrong with sqrt on positive")
     else:
-        print("everything is alright")
+        print("everything is alright with sqrt on positive (expected result)\n")
+
+    # Simple test for sqrt on negative value
+    try:
+        neg_comp_sqrt = MyComplexMath.sqrt(-10)
+        neg_real_sqrt = MyMath.sqrt(-10)
+        print("negative real sqrt: ", neg_real_sqrt)
+        print("negative complex sqrt: ", neg_comp_sqrt)
+    except Exception:
+        print("ohh, smth gone wrong with sqrt on negative (expected result)\n")
+    else:
+        print("everything is alright with sqrt")
+
+    # Simple test for sine:
+    try:
+        complex_sin = MyComplexMath.sin(1 + 1j)
+        real_sin = MyMath.sin(1)
+        print("sine on the real field:", real_sin)
+        print("sine on the complex field:", complex_sin)
+    except Exception:
+        print("ohh, smth gone wrong with sine")
+    else:
+        print("everything is alright with sine")
 
     '''
     Мы использовали классовыe методы, так как это позволило отслеживать, 

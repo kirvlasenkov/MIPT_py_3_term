@@ -13,9 +13,6 @@ class ComplexDescriptor:
         self.__name = name
 
     def __get__(self, instance, owner) -> Union[int, float]:
-        ''' assert (isinstance(type(instance.__dict__[self.__name]), int) or
-                 isinstance(type(instance.__dict__[self.__name]), float))'''
-
         return instance.__dict__[self.__name]
 
     def __set__(self, instance, value) -> None:
@@ -72,12 +69,6 @@ class MyComplex:
     def __bool__(self) -> bool:
         return self.real != 0 and self.imag != 0
 
-    def __int__(self) -> int:
-        return round(self.real)
-
-    def __float__(self) -> float:
-        return self.real
-
     def __eq__(self, other) -> bool:
         return self.real == other.real and self.imag == other.imag
 
@@ -87,23 +78,38 @@ class MyComplex:
     def __ge__(self, other) -> bool:
         return self.__abs__() >= other.__abs__
 
-    def __mul__(self, other) -> Union[int, float]:
-        return self.real * other.real + self.imag + other.imag
+    def __gt__(self, other):
+        return self.__abs__() > other.__abs__()
+
+    def __mul__(self, other) -> 'MyComplex':
+        real_part_1 = self.real * other.real
+        real_part_2 = -self.imag * other.imag
+        complex_part_1 = self.real * other.imag
+        complex_part_2 = self.real * other.imag
+
+        return MyComplex(real_part_1 + real_part_2, complex_part_1 + complex_part_2)
 
     def __hash__(self):
-        return hash(id(self))
+        return hash((self.real, self.imag))
 
 
 if __name__ == "__main__":
     x = MyComplex(1, 1)
     y = MyComplex(3, 3)
-    print(x + y)
-    print(x - y)
-    print(abs(x))
-    print(x == y)
-    print(repr(y), str(x), ascii(x))
-    print(bool(x))
-    print(hash(y))
-    print(int(x))
-    x.real, x.imag = 0, 0
-    print(bool(x))
+    print("sum of two complex numbers: ", x + y)
+    print("subtraction of two complex numbers: ", x - y)
+    print("absolute value", abs(x))
+    print("equal or not", x == y)
+    print("string interpretation in diff form: ", repr(y), str(x), ascii(x))
+    print("boolean interpretation: ", bool(x))
+    print("hash value: ", hash(y))
+
+    try:
+        x.real, x.imag = 0, 0
+    except Exception:
+        print("ohh, why always me (Im setter)???")
+
+    try:
+        x > y
+    except:
+        print("smth goes wrong with comparison")
