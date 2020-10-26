@@ -31,6 +31,10 @@ class MyVector:
         string = '(' + ", ".join(map(str, self.__args)) + ')'
         return string
 
+    def __neg__(self):
+        self.__args = np.array(list(map(lambda x: -x, self.__args)))
+        return self
+
     def __repr__(self) -> str:
         string = 'MyVector(' + ', '.join(map(str, self.__args)) + ')'
         return string
@@ -120,3 +124,4 @@ if __name__ == '__main__':
 
     print("sum of the vectors: ", MyVector(2, 1, 1) + MyVector(2, 4, 5))
     print("Euclidean norm: ", (MyVector(4, 1, 2, 3, 4).vector_norm()))
+    print("opposite vector related to vector_1: ", -vector_1)
