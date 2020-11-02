@@ -1,0 +1,14 @@
+setuptools==49.2.1
+wheel==0.35.1
+pytest==6.1.2
+attrs==20.2.0
+iniconfig==1.1.1
+mydearmath @ file:///Users/vlasenckov/MIPT/git_project/MIPT_py_3_term/w7/dist/mydearmath-0.0.1-py3-none-any.whl
+numpy==1.19.3
+packaging==20.4
+pluggy==0.13.1
+py==1.9.0
+pyparsing==2.4.7
+pytest==6.1.2
+six==1.15.0
+toml==0.10.2
