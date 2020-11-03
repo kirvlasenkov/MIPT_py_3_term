@@ -3,6 +3,7 @@ import math
 import cmath
 import numpy as np
 
+
 class MyMath:
     '''
     Simple class with some
@@ -45,4 +46,3 @@ class MyComplexMath(MyMath):  # Наследование
     Variation of MyMath for complex field.
     '''
     _complex: bool = True  # Наследование и инкапсуляция
-
