@@ -47,8 +47,8 @@ def test_vector_dot_product(lhs, rhs):
 
 
 @pytest.mark.parametrize('vector', [MyVector(1, 0), MyVector(2, 3, 1), MyVector(3, 4, 5, 9),
-                                 MyVector(4, 1, 3, 6, 4), MyVector(5, 9, 8, 5, 3, 9), MyVector(6, 5, 6, 8, 9, 0, 8)
-                                 ]
+                                    MyVector(4, 1, 3, 6, 4), MyVector(5, 9, 8, 5, 3, 9), MyVector(6, 5, 6, 8, 9, 0, 8)
+                                    ]
                          )
 def test_vector_norm(vector):
     np_vector = vector.args_as_np
