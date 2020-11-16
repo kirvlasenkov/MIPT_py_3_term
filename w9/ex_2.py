@@ -12,22 +12,22 @@ class TextLoader:
     def __init__(self, path: str):
         if os.path.exists(path):
             os.path.normcase(path)
-            self.folder_name = os.path.split(path)[1].rsplit(".", 1)[0]
+            self.__folder_name = os.path.split(path)[1].rsplit(".", 1)[0]
 
             zip_file = zipfile.ZipFile(path)
             zip_file.extractall("./extracted_files")
             zip_file.close()
 
-            self.files_path = os.path.join("./extracted_files", self.folder_name)
-            self.files = [file for file in os.listdir(self.files_path)
-                          if os.path.isfile(os.path.join(self.files_path, file))]
-            self.iterable_files = iter(self.files)
+            self.__files_path = os.path.join("./extracted_files", self.__folder_name)
+            self.__files = [file for file in os.listdir(self.__files_path)
+                            if os.path.isfile(os.path.join(self.__files_path, file))]
+            self.__iterable_files = iter(self.__files)
 
         else:
             raise IOError("non-existent path")
 
     def __len__(self) -> int:
-        return len(self.files)
+        return len(self.__files)
 
     @staticmethod
     def normalize(txt: str) -> str:
@@ -37,8 +37,8 @@ class TextLoader:
         return self
 
     def __next__(self):
-        file = next(self.iterable_files)
-        current_path = os.path.join(self.files_path, file)
+        file = next(self.__iterable_files)
+        current_path = os.path.join(self.__files_path, file)
 
         with open(current_path, "r") as f:
             text = TextLoader.normalize(f.read())
