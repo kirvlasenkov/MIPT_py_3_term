@@ -69,9 +69,12 @@ if __name__ == "__main__":
         activated_coroutine.send([i, j])
         if i % 3 == 0:
             print(f"Mean for step {i}: ", activated_coroutine.throw(Mean))
+            next(activated_coroutine)
         elif i % 3 == 1:
             print(f"Length for step {i}: ", activated_coroutine.throw(Len))
+            next(activated_coroutine)
         elif i % 3 == 2:
             print(f"Variance for step {i}: ", activated_coroutine.throw(Var))
+            next(activated_coroutine)
 
         print("\n")
