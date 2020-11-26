@@ -1,6 +1,6 @@
 import pytest
 
-from w10.hw_scripts.dot_product import dot_product
+from ..hw_scripts.pool_dot import dot_product
 from my_mathematics.linear_algebra import MyVector
 
 
@@ -12,13 +12,13 @@ from my_mathematics.linear_algebra import MyVector
                                       ]
                          )
 def test_dot_product_on_multithreading(lhs, rhs):
-    assert round(dot_product(lhs, rhs, mode="multithreading", units_number=1)[0], 5) == \
+    assert round(dot_product(lhs, rhs, 1)[0], 5) == \
            round(lhs.args_as_np.dot(rhs.args_as_np), 5)
 
-    assert round(dot_product(lhs, rhs, mode="multithreading", units_number=2)[0], 5) == \
+    assert round(dot_product(lhs, rhs, 2)[0], 5) == \
            round(lhs.args_as_np.dot(rhs.args_as_np), 5)
 
-    assert round(dot_product(lhs, rhs, mode="multithreading", units_number=4)[0], 5) == \
+    assert round(dot_product(lhs, rhs, 4)[0], 5) == \
            round(lhs.args_as_np.dot(rhs.args_as_np), 5)
 
 
@@ -30,11 +30,11 @@ def test_dot_product_on_multithreading(lhs, rhs):
                                       ]
                          )
 def test_dot_product_on_multiprocessing(lhs, rhs):
-    assert round(dot_product(lhs, rhs, mode="multiprocessing", units_number=1)[0], 5) == \
+    assert round(dot_product(lhs, rhs, 1)[0], 5) == \
            round(lhs.args_as_np.dot(rhs.args_as_np), 5)
 
-    assert round(dot_product(lhs, rhs, mode="multiprocessing", units_number=2)[0], 5) == \
+    assert round(dot_product(lhs, rhs, 2)[0], 5) == \
            round(lhs.args_as_np.dot(rhs.args_as_np), 5)
 
-    assert round(dot_product(lhs, rhs, mode="multiprocessing", units_number=4)[0], 5) == \
+    assert round(dot_product(lhs, rhs, 4)[0], 5) == \
            round(lhs.args_as_np.dot(rhs.args_as_np), 5)

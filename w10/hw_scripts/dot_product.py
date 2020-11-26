@@ -1,11 +1,11 @@
 from threading import Thread
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Pipe
 import time
 import random
 import numpy as np
+import matplotlib.pylab as plt
 
 from my_mathematics.linear_algebra import MyVector
-import matplotlib.pylab as plt
 
 # global variable for answer
 RESULT = 0
@@ -13,10 +13,6 @@ RESULT = 0
 
 # stolen from seminar
 def split_array(arr, pieces_number):
-    """
-    >>> split_array([1, 2, 3, 4], 2)
-    >>> [1, 2], [3, 4]
-    """
     step = len(arr) // pieces_number
     i = 0
     while i < pieces_number - 1:
@@ -25,10 +21,30 @@ def split_array(arr, pieces_number):
     yield arr[step * i:]
 
 
-def process_chunk_dot(left_chunk, right_chunk, queue):
+def process_chunk_dot_with_queue(left_chunk, right_chunk, queue):
+    """
+    Function for computing chunk dot on Queue object
+    @param left_chunk: lhs
+    @param right_chunk: rhs
+    @param queue: Queue()
+    @return: result of chunk dot product
+    """
     assert len(left_chunk) == len(right_chunk)
 
     queue.put(MyVector(len(left_chunk), *left_chunk) * MyVector(len(right_chunk), *right_chunk))
+
+
+def process_chunk_dot_with_pipe(left_chunk, right_chunk, child_conn):
+    """
+    Function for computing chunk dot on Pipe object
+    @param left_chunk: lhs
+    @param right_chunk: rhs
+    @param child_conn: Pipe() object for sending
+    @return: result of chunk dot product
+    """
+    assert len(left_chunk) == len(right_chunk)
+
+    child_conn.send((MyVector(len(left_chunk), *left_chunk) * MyVector(len(right_chunk), *right_chunk)))
 
 
 def thread_chunk_dot(left_chunk, right_chunk, dot_result):
@@ -38,6 +54,11 @@ def thread_chunk_dot(left_chunk, right_chunk, dot_result):
 
 
 def get_result(queue):
+    '''
+    Collecting result summarizing each chunk result
+    @param queue: Queue()
+    @return: result of a dot product on threads
+    '''
     result = 0
     while not queue.empty():
         result += queue.get()
@@ -52,7 +73,8 @@ def dot_product(lhs: "MyVector", rhs: "MyVector", mode, units_number):
     :param lhs: second operand  of a dot product
     :param mode: method of optimization. Allowed
      computing through multiprocessing or
-     multithreading.
+     multithreading. If you choose multiprocessing, result
+     will randomly compute using Pipe or Queue
     :param units_number: quantity of processes or threads,
      using for computing (name of units
      depends on mode which you've chosen)
@@ -83,28 +105,51 @@ def dot_product(lhs: "MyVector", rhs: "MyVector", mode, units_number):
         computed_time = time.time() - start_time
 
     elif mode == "multiprocessing":
-        queue = Queue()
-        processes = []
-        for left_chunk, right_chunk in zip(splited_lhs, splited_rhs):
-            processes.append(Process(target=process_chunk_dot, args=(left_chunk, right_chunk, queue)))
+        random.seed(1)
+        random_mode = random.choice(["Queue", "Pipe"])
+        result = 0
+        if random_mode == "Queue":
 
-        for process in processes:
-            process.start()
+            queue = Queue()
+            processes = []
+            for left_chunk, right_chunk in zip(splited_lhs, splited_rhs):
+                processes.append(Process(target=process_chunk_dot_with_queue, args=(left_chunk, right_chunk, queue)))
 
-        start_time = time.time()
-        for process in processes:
-            process.join()
-        computed_time = time.time() - start_time
-        RESULT = get_result(queue)
+            for process in processes:
+                process.start()
+
+            start_time = time.time()
+            for process in processes:
+                process.join()
+            computed_time = time.time() - start_time
+            RESULT = get_result(queue)
+
+        elif random_mode == "Pipe":
+            parent_conn, child_conn = Pipe()
+            processes = []
+            for left_chunk, right_chunk in zip(splited_lhs, splited_rhs):
+                processes.append(
+                    Process(target=process_chunk_dot_with_pipe, args=(left_chunk, right_chunk, child_conn)))
+
+            for process in processes:
+                    process.start()
+
+            start_time = time.time()
+            for process in processes:
+                process.join()
+            computed_time = time.time() - start_time
+            RESULT = parent_conn.recv()
+
+
 
     return RESULT, computed_time
 
 
 if __name__ == "__main__":
-    LEN = 10 ** 7
-    units_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 20]
-    lhs = MyVector(LEN, *[random.random() * 10 ** 10 for _ in range(LEN)])
-    rhs = MyVector(LEN, *[random.random() * 10 ** 10 for _ in range(LEN)])
+    LEN = 10
+    units_number = [1, 2, 3]
+    lhs = MyVector(LEN, *[random.random() * 10  for _ in range(LEN)])
+    rhs = MyVector(LEN, *[random.random() * 10  for _ in range(LEN)])
     process_result = 0
     thread_result = 0
 
