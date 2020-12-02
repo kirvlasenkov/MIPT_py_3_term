@@ -10,7 +10,7 @@ async def process_response(url, client):
         response_text = await response.text()
 
         for line in response_text:
-            if re.search(r"<a >", line):
+            if re.search(r"^<a>", line):
                 async with aiofile.AIOFile("found.txt", "a") as file:
                     await file.write(line + " <------was founded")
 
@@ -31,4 +31,3 @@ if __name__ == "__main__":
     time_start = time.time()
     loop.run_until_complete(read_urls("urls.txt"))
     print("Took time:", time.time() - time_start)
-
