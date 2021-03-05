@@ -1,3 +1,5 @@
+<img src="http://cs.mipt.ru/python/images/logo.png" class="logo">
+
 # MIPT_py_3_term
 --------------
 Python programming course at Moscow Institute of Physics and Technology.
