@@ -18,5 +18,5 @@ Python programming course at Moscow Institute of Physics and Technology.
 + [week 13](week_13) - Serialization-Deserialization 
 
 ## Projects, which were made in addition:
-+ [phrase_generator_bot](https://github.com/vlasenckov/phrase_generator_bot) - Telegram bot, inspired of MIPT teachers' speech
++ [phrase_bot](phrase_bot) - Telegram bot, inspired of MIPT teachers' speech
 + [client_server_app](client_server_app) - Pretty simple implementation of client-server application on sockets
