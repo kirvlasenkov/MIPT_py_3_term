@@ -2,7 +2,7 @@
 
 # MIPT_py_3_term
 --------------
-Python programming course at Moscow Institute of Physics and Technology.
+### Python programming course at Moscow Institute of Physics and Technology.
 
 ## Brief description:
 + [week 1](week_01) - Repetitio est mater studiōrum
